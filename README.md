@@ -1,6 +1,6 @@
 # EN3150 Assignment 03: CNN for Image Classification
 
-[cite_start]This repository contains the code and report for the **EN3150 Assignment 03: Simple convolutional neural network to perform classification**[cite: 1]. [cite_start]The project involves building, training, and evaluating a custom Convolutional Neural Network (CNN) and comparing its performance against state-of-the-art pre-trained models using transfer learning[cite: 4, 55].
+This repository contains the complete code for **EN3150 Assignment 03: Simple convolutional neural network to perform classification**. This project implements a custom Convolutional Neural Network (CNN) from scratch using TensorFlow/Keras, compares its performance against `Standard SGD` and `SGD with Momentum`, and then benchmarks this custom model against two state-of-the-art pre-trained models (`ResNet50` and `DenseNet121`) using PyTorch and transfer learning.
 
 
 
@@ -10,26 +10,26 @@
 ## 📝 Project Objective
 
 The primary goal of this assignment is to:
-1.  [cite_start]**Build a Custom CNN:** Construct a simple CNN from scratch to classify images from a chosen dataset[cite: 4, 29].
-2.  [cite_start]**Analyze Optimizer Performance:** Compare the performance of the `Adam` optimizer against `Standard SGD` and `SGD with Momentum`[cite: 45].
-3.  [cite_start]**Implement Transfer Learning:** Fine-tune two state-of-the-art pre-trained models (e.g., `ResNet50` and `DenseNet121`) on the same dataset[cite: 57, 58].
-4.  [cite_start]**Compare and Conclude:** Analyze the trade-offs, advantages, and limitations of the custom-built model versus the pre-trained models[cite: 63, 65].
+1.  **Build a Custom CNN:** Construct a deep CNN from scratch to classify images from the "RealWaste" dataset.
+2.  **Analyze Optimizer Performance:** Systematically compare the performance of the `Adam` optimizer against `Standard SGD` and `SGD with Momentum` to understand their impact on training.
+3.  **Implement Transfer Learning:** Fine-tune two state-of-the-art models, `ResNet50` and `DenseNet121`, on the same dataset.
+4.  **Compare and Conclude:** Analyze the trade-offs in performance, speed, and complexity between the custom-built model and the pre-trained models.
 
 ## 🗂️ Dataset
 
-* [cite_start]**Source:** As per the assignment, the `CIFAR-10` dataset was not used[cite: 7]. This project uses the **"RealWaste"** dataset, which features images of waste classified into different categories (e.g., plastic, paper, metal).
-* **Data Split:** The dataset was split according to the assignment's requirements:
-    * [cite_start]**Training:** 70% [cite: 9]
-    * [cite_start]**Validation:** 15% [cite: 9]
-    * [cite_start]**Testing:** 15% [cite: 9]
+* **Source:** This project uses the **"RealWaste"** dataset, which contains images of waste classified into 9 categories (e.g., plastic, paper, metal).
+* **Data Split:** As required by the assignment, the dataset was split into:
+    * **Training:** 70%
+    * **Validation:** 15%
+    * **Testing:** 15%
 
 ## 🛠️ Project Structure
 
-This project is divided into two main parts, as outlined in the assignment notebook:
+This project is divided into two main parts, implemented in two different frameworks.
 
 ### Part 1: Custom CNN (from scratch)
 * **Framework:** `TensorFlow` / `Keras`
-* [cite_start]**Architecture:** A VGG-style custom sequential model consisting of 5 `Conv2D` + `MaxPooling2D` blocks, followed by a `Dense` classifier with `Dropout` [cite: 30-37].
+* **Architecture:** A deep VGG-style sequential model consisting of 5 `Conv2D` + `MaxPooling2D` blocks. The filter sizes are (32, 64, 128, 256, 512). This is followed by a `Dense(512)` layer with L2 regularization and a `Dropout(0.2)` layer for classification.
 * **Optimizer Comparison:** The model was trained 3 separate times (20 epochs each) to compare:
     1.  **Adam** (lr=1e-4)
     2.  **Standard SGD** (lr=1e-2)
@@ -37,34 +37,37 @@ This project is divided into two main parts, as outlined in the assignment noteb
 
 ### Part 2: State-of-the-Art Model Comparison
 * **Framework:** `PyTorch` / `TorchVision`
-* [cite_start]**Technique:** Transfer Learning (Fixed Feature Extractor)[cite: 56]. The pre-trained convolutional bases were frozen, and only the final classifier layer was trained.
+* **Technique:** Transfer Learning (Fixed Feature Extractor). The pre-trained convolutional bases were frozen, and only the final classifier layer was unfrozen and trained for 20 epochs.
 * **Models:**
     1.  **ResNet50**
     2.  **DenseNet121**
 
 ## 📊 Final Results Summary
 
-This table summarizes the final performance of all trained models on the **unseen test set**.
+This table summarizes the final performance of the primary custom model and the pre-trained models on the **15% unseen test set**.
 
-| Model | Framework | Test Accuracy | Test Loss |
-| :--- | :--- | :--- | :--- |
-| **Custom CNN (Adam)** | Keras | **[Your Acc %]** | **[Your Loss]** |
-| Custom CNN (SGD) | Keras | [Your Acc %] | [Your Loss] |
-| Custom CNN (Momentum) | Keras | [Your Acc %] | [Your Loss] |
-| **ResNet50 (Fine-Tuned)** | PyTorch | **[Your Acc %]** | **[Your Loss]** |
-| **DenseNet121 (Fine-Tuned)**| PyTorch | **[Your Acc %]** | **[Your Loss]** |
+| Model | Framework | Test Accuracy |
+| :--- | :--- | :--- |
+| **Custom CNN (from scratch)** | Keras | **71.95%** |
+| **ResNet50 (Fine-Tuned)** | PyTorch | **81.00%** |
+| **DenseNet121 (Fine-Tuned)**| PyTorch | **81.00%** |
 
 ### Key Findings
-* **(TODO: Write your finding)**
-* **Example:** As expected, the pre-trained `DenseNet121` and `ResNet50` models significantly outperformed the custom-built CNN. This demonstrates the power of transfer learning, which leverages features learned from the massive ImageNet dataset.
-* [cite_start]For the custom models, `Adam` and `SGD with Momentum` provided much faster convergence and better final accuracy than standard `SGD`, highlighting the impact of adaptive learning rates and momentum[cite: 49].
+* The pre-trained models (`ResNet50` and `DenseNet121`) **significantly outperformed** the custom-built CNN, achieving an identical top accuracy of **81.00%**. This highlights the power of transfer learning, which leverages features learned from the massive ImageNet dataset.
+* The custom-built model, which had to learn features from scratch, achieved a solid accuracy of **71.95%**.
+* The ~9% performance gap demonstrates the clear advantage of using pre-trained models for common computer vision tasks, saving both training time and yielding superior results.
 
 ## 🚀 How to Run
 
-This project is contained within a single notebook (e.g., `EN3150_A03.ipynb`).
-
 ### 1. Requirements
-The models were built using standard data science libraries. You can install them via pip:
+This project uses two different frameworks. The necessary libraries can be installed via `pip`:
 
 ```bash
-pip install -r requirements.txt
+# For PyTorch (Part 2)
+pip install torch torchvision
+
+# For TensorFlow (Part 1)
+pip install tensorflow
+
+# For evaluation and utilities
+pip install scikit-learn numpy matplotlib seaborn pillow
