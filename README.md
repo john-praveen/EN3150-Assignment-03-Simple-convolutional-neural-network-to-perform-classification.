@@ -3,7 +3,6 @@
 This repository contains the complete code for **EN3150 Assignment 03: Simple convolutional neural network to perform classification**. This project implements a custom Convolutional Neural Network (CNN) from scratch using TensorFlow/Keras, compares its performance against `Standard SGD` and `SGD with Momentum`, and then benchmarks this custom model against two state-of-the-art pre-trained models (`ResNet50` and `DenseNet121`) using PyTorch and transfer learning.
 
 
-
 [Image of a convolutional neural network architecture]
 
 
